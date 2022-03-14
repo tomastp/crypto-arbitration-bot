@@ -1,0 +1,11 @@
+# Logs 
+logs/
+
+# Compiled binary addons
+dist/
+
+# Dependency directories
+node_modules/
+
+# env
+.env
