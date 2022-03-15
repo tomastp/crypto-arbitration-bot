@@ -12,7 +12,7 @@ const httpServer = http.createServer(app)
 const io = new WebSockerServer(httpServer, {
     cors: { 
         origin: `${env().domain}:${PORT}`,
-        methods: ["GET", "POST"],
+        methods: ['GET', 'POST'],
         credentials: true
     },
     allowEIO3: true

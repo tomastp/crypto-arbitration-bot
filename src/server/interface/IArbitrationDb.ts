@@ -1,5 +1,5 @@
 
-import { Document, Model } from "mongoose";
+import { Document, Model } from 'mongoose'
 
 export interface IArbitrationDb {
     arbitration_percent: number

@@ -1,0 +1,10 @@
+{
+    "rules": {
+        "curly": true,  
+        "quotemark": [true, "single"],
+        "class-name": true, 
+        "interface-name": [ true, "always-prefix" ],
+        "no-var-keyword": true,
+        "no-any": false
+    }
+}

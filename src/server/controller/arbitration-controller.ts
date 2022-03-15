@@ -1,7 +1,7 @@
 import { bitsoExchangeHelper, cryptoMarketExchangeHelper } from '../helper/helper-module'
 import { CryptoMarketExchangeHelper, BitsoExchangeHelper } from '../helper'
 import { bitsoService, cryptomktService} from '../service/service-module'
-import Logger from "../middleware/winston-middleware"
+import Logger from '../middleware/winston-middleware'
 import { Observable , forkJoin} from 'rxjs'
 import io from '../config/socket'
 import { 
@@ -19,6 +19,8 @@ export class ArbitrationController {
     public crypto_matket_exchange: IExchange
     private indexOfExchanges: IExchange[]
     private directions: string[] = []
+
+    static arbitrationPercent: number = 5
 
     static eventSocketUpdatePrice: string = 'update-prices'
     static eventSocketUpdateArbitration: string = 'update-arbitration'
@@ -151,10 +153,9 @@ export class ArbitrationController {
      * @return void
      */
      private resolveArbitration(): void {
-        const arbitration_percent: number = 2
         let arbitrations = this.compareExchangeTicker()
         arbitrations.forEach(arbitration => {
-            if(arbitration.arbitration_percent >= arbitration_percent) {
+            if(arbitration.arbitration_percent >= ArbitrationController.arbitrationPercent) {
                 try {
                     switch (arbitration.exchange_direction) {
                         case BitsoExchangeHelper.exchangeName:
@@ -176,7 +177,7 @@ export class ArbitrationController {
                              }
                             return this.makeTransactions(arbitration, paramsDirectionCrpMkt)
                         default:
-                            throw new Error("Can't resolve direction from Arbitration");
+                            throw new Error(`Can't resolve direction from Arbitration`);
                     }
                 } catch (error) {
                     Logger.error(JSON.stringify(error))    
