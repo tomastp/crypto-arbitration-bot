@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import Axios from  'axios-observable'
-import { ICryptoMarketBodyRequestTransaction } from '../interface'
+import { ICryptoMarketRequest } from '../interface'
 
 export class CryptomktService {
     
@@ -25,10 +25,10 @@ export class CryptomktService {
 
     /**
      * Post new order to sell or buy
-     * @param params ICryptoMarketBodyRequestTransaction
+     * @param params ICryptoMarketRequest
      * @returns Observable
      */
-    postTransaction(params: ICryptoMarketBodyRequestTransaction): Observable<any> {
+    postTransaction(params: ICryptoMarketRequest): Observable<any> {
         return Axios.post('/orders', {
             headers: {
                 key: params.headers.key,

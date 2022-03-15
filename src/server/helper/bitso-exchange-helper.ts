@@ -1,5 +1,5 @@
 import { env } from '../environment/env'
-import { IBitsoBodyRequestTransaction } from '../interface/IBitsoBodyRequestTransaction'
+import { IBitsoRequest } from '../interface/IBitsoRequest'
 
 export class BitsoExchangeHelper {
 
@@ -11,10 +11,10 @@ export class BitsoExchangeHelper {
      * to sell crypto
      * @param major number
      * @param origin_id number
-     * @returns IBitsoBodyRequestTransaction
+     * @returns IBitsoRequest
      */
-    setRequestSellCrypto(major: number, origin_id: number): IBitsoBodyRequestTransaction {
-        let rtn: IBitsoBodyRequestTransaction = {
+    setRequestSellCrypto(major: number, origin_id: number): IBitsoRequest {
+        let rtn: IBitsoRequest = {
             headers: {
                 key: env().appKeyBitso!,
                 signature: env().appSignatureBitso!,
@@ -36,10 +36,10 @@ export class BitsoExchangeHelper {
      * to buy crypto
      * @param major number
      * @param origin_id number
-     * @returns IBitsoBodyRequestTransaction
+     * @returns IBitsoRequest
      */
-    setRequestBuyCrypto(major: number, origin_id: number): IBitsoBodyRequestTransaction {
-        let rtn: IBitsoBodyRequestTransaction = {
+    setRequestBuyCrypto(major: number, origin_id: number): IBitsoRequest {
+        let rtn: IBitsoRequest = {
             headers: {
                 key: env().appKeyBitso!,
                 signature: env().appSignatureBitso!,

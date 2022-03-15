@@ -1,11 +1,11 @@
-export interface ICryptoMarketBodyRequestTransaction {
+export interface IBitsoRequest {
     headers: {
         key: string
         signature: string
         nonce: string
     }
     body: {
-        symbol: string
+        book: string
         side: string
         type: string
         major: number

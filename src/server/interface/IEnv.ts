@@ -4,8 +4,6 @@ export interface IEnv {
     webSocketPort: number
     db: IMongoDBCfg
     domain?: string
-    apiPath?: string
-    staticPath?: string
     appKeyBitso?: string
     appSignatureBitso?: string
     appNonceBitso?: string
@@ -19,5 +17,6 @@ export interface IMongoDBCfg {
     user: string
     pw: string
     account: string
-    uri: (user: string, pw: string, name: string, account: string) => string
+    host: string,
+    uri: string
 }

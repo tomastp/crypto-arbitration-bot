@@ -4,10 +4,23 @@ import { Observable } from 'rxjs'
 import { arbitrationController } from './controller/controller-module'
 import path  from 'path'
 import { env } from './environment/env'
+import mongoose from 'mongoose'
+import { from } from 'rxjs'
 
 const port = app.get('port')
 app.listen(port, () => {
     Logger.debug(`Server is up and running @ ${env().domain}:${port}`)
+})
+
+// Database connection
+const mongooseObservable = from(mongoose.connect(env().db.uri, {}))
+mongooseObservable.subscribe({
+    next: (result) => {
+        Logger.debug('Db connected')
+    },
+    error: (err) => {
+        Logger.error(JSON.stringify(err))
+    }
 })
 
 // observable ticker

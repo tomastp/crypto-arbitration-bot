@@ -1,5 +1,5 @@
 import { env } from '../environment/env'
-import { ICryptoMarketBodyRequestTransaction } from '../interface/ICryptoMarketBodyRequestTransaction'
+import { ICryptoMarketRequest } from '../interface'
 
 export class CryptoMarketExchangeHelper {
 
@@ -11,10 +11,10 @@ export class CryptoMarketExchangeHelper {
      * to sell crypto
      * @param major number
      * @param origin_id number
-     * @returns ICryptoMarketBodyRequestTransaction
+     * @returns ICryptoMarketRequest
      */
-    setRequestSellCrypto(major: number, origin_id: number): ICryptoMarketBodyRequestTransaction {
-        let rtn: ICryptoMarketBodyRequestTransaction = {
+    setRequestSellCrypto(major: number, origin_id: number): ICryptoMarketRequest {
+        let rtn: ICryptoMarketRequest = {
             headers: {
                 key: env().appKeyBitso!,
                 signature: env().appSignatureBitso!,
@@ -36,10 +36,10 @@ export class CryptoMarketExchangeHelper {
      * to buy crypto
      * @param major number
      * @param origin_id number
-     * @returns ICryptoMarketBodyRequestTransaction
+     * @returns ICryptoMarketRequest
      */
-    setRequestBuyCrypto(major: number, origin_id: number): ICryptoMarketBodyRequestTransaction {
-        let rtn: ICryptoMarketBodyRequestTransaction = {
+    setRequestBuyCrypto(major: number, origin_id: number): ICryptoMarketRequest {
+        let rtn: ICryptoMarketRequest = {
             headers: {
                 key: env().appKeyBitso!,
                 signature: env().appSignatureBitso!,

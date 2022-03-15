@@ -1,7 +1,6 @@
-import { IBitsoBodyRequestTransaction } from './IBitsoBodyRequestTransaction'
-import { ICryptoMarketBodyRequestTransaction } from './ICryptoMarketBodyRequestTransaction'
+import { IBitsoRequest, ICryptoMarketRequest } from './'
 
 export interface IMultipleTransactions {
-    bitsoParamsRequest: IBitsoBodyRequestTransaction
-    cryptoMarketParamsRequest: ICryptoMarketBodyRequestTransaction
+    bitsoParamsRequest: IBitsoRequest
+    cryptoMarketParamsRequest: ICryptoMarketRequest
 }

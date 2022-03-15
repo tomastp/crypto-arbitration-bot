@@ -8,9 +8,10 @@ import {
     IExchange,
     IArbitration,
     IMultipleTransactions,
-    IBitsoBodyRequestTransaction,
-    ICryptoMarketBodyRequestTransaction
+    IBitsoRequest,
+    ICryptoMarketRequest
 } from '../interface'
+import { arbitrationRepository } from '../models/repository/repository-module'
 
 export class ArbitrationController {
   
@@ -109,15 +110,16 @@ export class ArbitrationController {
      * @returns void
      */
     private makeTransactions(arbitration: IArbitration, params: IMultipleTransactions): void {
-        // Socket emit arbitration updates, it's should be after the exchanges transaccions successed,
-        // but in this case we can't make it becouse we haben't credentials
+        // sockets.emit() & arbitrationRepository.create(), it's should be after the exchanges transaccions 
+        // successed, but in this case we can't make it becouse we haven't credentials
         io.sockets.emit(ArbitrationController.eventSocketUpdateArbitration, {
             message: `New arbitration made! Direction ${arbitration.exchange_direction} - percent: %${arbitration.arbitration_percent}`
         })
-
-        let observable_bitso    = bitsoService.postTransaction(params.bitsoParamsRequest)
-        let observable_crypto_m = cryptomktService.postTransaction(params.cryptoMarketParamsRequest)
-        forkJoin([observable_bitso, observable_crypto_m]).subscribe({
+        arbitrationRepository.create(arbitration)
+       
+        let observableBitso = bitsoService.postTransaction(params.bitsoParamsRequest)
+        let observableCryptoMarket = cryptomktService.postTransaction(params.cryptoMarketParamsRequest)
+        forkJoin([observableBitso, observableCryptoMarket]).subscribe({
             next: (results) => {
                 let btiso_success: boolean = false
                 let crmkt_success: boolean = false
@@ -133,6 +135,7 @@ export class ArbitrationController {
                     io.sockets.emit(ArbitrationController.eventSocketUpdateArbitration, {
                         message: `New arbitration made! Direction ${arbitration.exchange_direction} - percent: %${arbitration.arbitration_percent}`
                     })
+                    arbitrationRepository.create(arbitration)
                 }
             },
             error: (err) => {
@@ -148,7 +151,7 @@ export class ArbitrationController {
      * @return void
      */
      private resolveArbitration(): void {
-        const arbitration_percent: number = 5
+        const arbitration_percent: number = 2
         let arbitrations = this.compareExchangeTicker()
         arbitrations.forEach(arbitration => {
             if(arbitration.arbitration_percent >= arbitration_percent) {
@@ -156,20 +159,20 @@ export class ArbitrationController {
                     switch (arbitration.exchange_direction) {
                         case BitsoExchangeHelper.exchangeName:
                             // In this direction we sell on Bitso and buy in CryptoMarket
-                            let paramsSellBitso: IBitsoBodyRequestTransaction = bitsoExchangeHelper.setRequestSellCrypto(1, 1)
-                            let paramsBuyCrtMkt: ICryptoMarketBodyRequestTransaction = cryptoMarketExchangeHelper.setRequestBuyCrypto(1, 1)
+                            let paramsSellBitso: IBitsoRequest = bitsoExchangeHelper.setRequestSellCrypto(1, 1)
+                            let paramsBuyCrtMkt: ICryptoMarketRequest = cryptoMarketExchangeHelper.setRequestBuyCrypto(1, 1)
                             let paramsDirectionBitso: IMultipleTransactions = {
-                               bitsoParamsRequest:  paramsSellBitso,
+                                bitsoParamsRequest:  paramsSellBitso,
                                 cryptoMarketParamsRequest: paramsBuyCrtMkt
                             }
                             return this.makeTransactions(arbitration, paramsDirectionBitso)
                         case CryptoMarketExchangeHelper.exchangeName:
                             // In this direction we sell on CryptoMarket and buy in Bitso
-                            let paramsBuyBitso: IBitsoBodyRequestTransaction = bitsoExchangeHelper.setRequestBuyCrypto(1, 1)
-                            let paramsSellCrtMkt: ICryptoMarketBodyRequestTransaction = cryptoMarketExchangeHelper.setRequestSellCrypto(1, 1)
+                            let paramsBuyBitso: IBitsoRequest = bitsoExchangeHelper.setRequestBuyCrypto(1, 1)
+                            let paramsSellCrtMkt: ICryptoMarketRequest = cryptoMarketExchangeHelper.setRequestSellCrypto(1, 1)
                             let paramsDirectionCrpMkt: IMultipleTransactions = {
                                 bitsoParamsRequest:  paramsBuyBitso,
-                                 cryptoMarketParamsRequest: paramsSellCrtMkt
+                                cryptoMarketParamsRequest: paramsSellCrtMkt
                              }
                             return this.makeTransactions(arbitration, paramsDirectionCrpMkt)
                         default:
@@ -200,10 +203,11 @@ export class ArbitrationController {
 
             // Set arbitration
             let newArbitration: IArbitration = {
-                exchange: exchangeIteration!,
+                exchange_selling: exchangeIteration!,
+                exchange_buying: exchangeleft!,
                 exchange_direction: direction,
                 arbitration_percent: format_benefit
-            } 
+            }
 
             arbirations.push(newArbitration)
         })

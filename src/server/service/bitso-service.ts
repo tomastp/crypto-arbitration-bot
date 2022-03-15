@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import Axios from  'axios-observable'
-import { IBitsoBodyRequestTransaction } from '../interface'
+import { IBitsoRequest } from '../interface'
 
 export class BitsoService {
     
@@ -25,10 +25,10 @@ export class BitsoService {
 
     /**
      * Post new order to sell or buy
-     * @param params IBitsoBodyRequestTransaction
+     * @param params IBitsoRequest
      * @returns Observable
      */
-    postTransaction(params: IBitsoBodyRequestTransaction): Observable<any> {
+    postTransaction(params: IBitsoRequest): Observable<any> {
         return Axios.post('/orders', {
             headers: {
                 key: params.headers.key,
