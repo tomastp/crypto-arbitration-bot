@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import { env } from '../environment/env'
 
 // instance application
-const app  = express()
+const app = express()
 
 // .env configuration
 dotenv.config()

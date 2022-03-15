@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "A project made to arbitrate a cryptocurrency on two different exchanges, Bitso and CryptoMarket. The arbitration criterion is %5",
   "scripts": {
-    "build-server": "npx tsc --project ./src/server",
-    "build-client": "npx tsc --project ./src/client",
+    "build-server": "npx tsc -p ./src/server",
     "dev-concurrently": "concurrently -k \"npx tsc -p ./src/server -w\"  \"nodemon dist/server/index.js\"",
-    "start": "concurrently -k  \"node ./dist/server/index.js\""
+    "start": "node ./dist/server/index.js"
   },
   "author": "Tomas Ponzone",
   "license": "ISC",
@@ -14,10 +13,13 @@
     "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.21",
+    "axios": "^0.26.1",
+    "axios-observable": "^1.4.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "morgan": "^1.10.0",
     "rxjs": "^7.5.5",
+    "socket.io": "^4.4.1",
     "typescript": "^4.6.2",
     "winston": "^3.6.0"
   },

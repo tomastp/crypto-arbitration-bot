@@ -6,6 +6,12 @@ export interface IEnv {
     domain?: string
     apiPath?: string
     staticPath?: string
+    appKeyBitso?: string
+    appSignatureBitso?: string
+    appNonceBitso?: string
+    appKeyCryMkt?: string
+    appSignatureCryMkt?: string
+    appNonceCryMkt?: string
 }
 
 export interface IMongoDBCfg {

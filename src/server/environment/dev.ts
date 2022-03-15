@@ -7,6 +7,12 @@ export const ENV:IEnv = {
     domain: process.env.DOMAIN,
     apiPath: process.env.API_PATH,
     staticPath: process.env.STATIC_PATH,
+    appKeyBitso: process.env.APP_KEY_BITSO,
+    appSignatureBitso: process.env.APP_SIGNATURE_BITSO,
+    appNonceBitso: process.env.APP_NONCE_BITSO,
+    appKeyCryMkt: process.env.APP_KEY_CRYPMKT,
+    appSignatureCryMkt: process.env.APP_SIGNATURE_CRYPMKT,
+    appNonceCryMkt: process.env.APP_NONCE_CRYPMKT,
     db:{
         name: 'COLLECTION_NAME',
         user:'',

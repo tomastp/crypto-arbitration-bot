@@ -1,5 +1,4 @@
 import morgan, { StreamOptions } from 'morgan'
-
 import Logger from './winston-middleware'
 
 const stream: StreamOptions = {
