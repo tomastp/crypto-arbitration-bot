@@ -16,7 +16,6 @@ export interface IMongoDBCfg {
     name: string
     user: string
     pw: string
-    account: string
     host: string,
     uri: string
 }

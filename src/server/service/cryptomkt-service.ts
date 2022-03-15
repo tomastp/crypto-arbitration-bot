@@ -40,7 +40,7 @@ export class CryptomktService {
                 side: params.body.side,
                 type: params.body.type,
                 major: params.body.major,
-                origin_id: params.body.origin_id
+                originId: params.body.originId
             }
         })
     }

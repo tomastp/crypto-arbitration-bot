@@ -2,7 +2,6 @@
 import { Document, Model } from 'mongoose'
 
 export interface IArbitrationDb {
-    arbitration_percent: number
     exchangeSelling: string
     exchangeBuying: string
     arbitrationPercent: number

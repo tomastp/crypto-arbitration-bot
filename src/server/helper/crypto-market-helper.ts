@@ -10,10 +10,10 @@ export class CryptoMarketExchangeHelper {
      * Set the request parameters to send in the post request
      * to sell crypto
      * @param major number
-     * @param origin_id number
+     * @param originId number
      * @returns ICryptoMarketRequest
      */
-    setRequestSellCrypto(major: number, origin_id: number): ICryptoMarketRequest {
+    setRequestSellCrypto(major: number, originId: number): ICryptoMarketRequest {
         let rtn: ICryptoMarketRequest = {
             headers: {
                 key: env().appKeyBitso!,
@@ -25,7 +25,7 @@ export class CryptoMarketExchangeHelper {
                 side: 'sell',
                 type: 'merket',
                 major: major,
-                origin_id: origin_id
+                originId: originId
             }
         }
         return rtn
@@ -35,10 +35,10 @@ export class CryptoMarketExchangeHelper {
      * Set the request parameters to send in the post request
      * to buy crypto
      * @param major number
-     * @param origin_id number
+     * @param originId number
      * @returns ICryptoMarketRequest
      */
-    setRequestBuyCrypto(major: number, origin_id: number): ICryptoMarketRequest {
+    setRequestBuyCrypto(major: number, originId: number): ICryptoMarketRequest {
         let rtn: ICryptoMarketRequest = {
             headers: {
                 key: env().appKeyBitso!,
@@ -50,7 +50,7 @@ export class CryptoMarketExchangeHelper {
                 side: 'buy',
                 type: 'merket',
                 major: major,
-                origin_id: origin_id
+                originId: originId
             }
         }
         return rtn

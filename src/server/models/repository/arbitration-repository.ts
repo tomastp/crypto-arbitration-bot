@@ -7,11 +7,11 @@ export class ArbitrationRepository {
 
     create(arbitration: IArbitration): void{
         const observable = from(arbitrationDbModel.create({
-            exchangeSelling: arbitration.exchange_selling.name, 
-            exchangeBuying: arbitration.exchange_buying.name,
-            arbitrationPercent: arbitration.arbitration_percent,
-            sellingPrice: arbitration.exchange_selling.ticker?.ask,
-            buyingPrice: arbitration.exchange_buying.ticker?.bid
+            exchangeSelling: arbitration.exchangeSelling.name, 
+            exchangeBuying: arbitration.exchangeBuying.name,
+            arbitrationPercent: arbitration.arbitrationPercent,
+            sellingPrice: arbitration.exchangeSelling.ticker?.ask,
+            buyingPrice: arbitration.exchangeBuying.ticker?.bid
         }))
         observable.subscribe({
             next: (results) => {

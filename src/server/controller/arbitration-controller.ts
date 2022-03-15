@@ -15,8 +15,8 @@ import { arbitrationRepository } from '../models/repository/repository-module'
 
 export class ArbitrationController {
   
-    public bitso_exchange: IExchange
-    public crypto_matket_exchange: IExchange
+    public bitsoExchange: IExchange
+    public cryptoMatketExchange: IExchange
     private indexOfExchanges: IExchange[]
     private directions: string[] = []
 
@@ -26,19 +26,19 @@ export class ArbitrationController {
     static eventSocketUpdateArbitration: string = 'update-arbitration'
 
     constructor() {
-        this.bitso_exchange = {
+        this.bitsoExchange = {
             name: BitsoExchangeHelper.exchangeName,
-            service_name: 'bitsoService',
+            serviceName: 'bitsoService',
         }
 
-        this.crypto_matket_exchange = {
+        this.cryptoMatketExchange = {
             name: CryptoMarketExchangeHelper.exchangeName,
-            service_name: 'cryptomktService',
+            serviceName: 'cryptomktService',
         }
 
         this.indexOfExchanges = [
-            this.bitso_exchange,
-            this.crypto_matket_exchange,
+            this.bitsoExchange,
+            this.cryptoMatketExchange,
         ]
 
         this.indexOfExchanges.forEach(element => {
@@ -56,28 +56,28 @@ export class ArbitrationController {
             let cryptoMarketObservable = this.getCryptoMarketTickerObservable()
             forkJoin([bitsoObservable, cryptoMarketObservable]).subscribe({
                 next: (results) => {
-                    let payload_bitso = results[0].data.payload
-                    this.bitso_exchange.ticker = {
+                    let payloadBitso = results[0].data.payload
+                    this.bitsoExchange.ticker = {
                         symbol: BitsoExchangeHelper.book,
-                        high: payload_bitso.high,
-                        low: payload_bitso.low,
-                        volume: payload_bitso.volume,
-                        bid: payload_bitso.bid,
-                        ask: payload_bitso.ask,
+                        high: payloadBitso.high,
+                        low: payloadBitso.low,
+                        volume: payloadBitso.volume,
+                        bid: payloadBitso.bid,
+                        ask: payloadBitso.ask,
                     }
-                    let payload_cr_mkt = results[1].data.BTCARS
-                    this.crypto_matket_exchange.ticker = {
+                    let payloadCryptoMarket = results[1].data.BTCARS
+                    this.cryptoMatketExchange.ticker = {
                         symbol: CryptoMarketExchangeHelper.symbol,
-                        high: payload_cr_mkt.high,
-                        low: payload_cr_mkt.low,
-                        volume: payload_cr_mkt.volume,
-                        bid: payload_cr_mkt.bid,
-                        ask: payload_cr_mkt.ask,
+                        high: payloadCryptoMarket.high,
+                        low: payloadCryptoMarket.low,
+                        volume: payloadCryptoMarket.volume,
+                        bid: payloadCryptoMarket.bid,
+                        ask: payloadCryptoMarket.ask,
                     }
                     // Socket emit event updating prices
                     io.sockets.emit(ArbitrationController.eventSocketUpdatePrice, {
-                        bitso: this.bitso_exchange.ticker,
-                        crypto_market: this.crypto_matket_exchange.ticker
+                        bitso: this.bitsoExchange.ticker,
+                        cryptoMarket: this.cryptoMatketExchange.ticker
                     })
                     this.resolveArbitration()
                 },
@@ -115,7 +115,7 @@ export class ArbitrationController {
         // sockets.emit() & arbitrationRepository.create(), it's should be after the exchanges transaccions 
         // successed, but in this case we can't make it becouse we haven't credentials
         io.sockets.emit(ArbitrationController.eventSocketUpdateArbitration, {
-            message: `New arbitration made! Direction ${arbitration.exchange_direction} - percent: %${arbitration.arbitration_percent}`
+            message: `New arbitration made! Direction ${arbitration.exchangeDirection} - percent: %${arbitration.arbitrationPercent}`
         })
         arbitrationRepository.create(arbitration)
        
@@ -123,19 +123,19 @@ export class ArbitrationController {
         let observableCryptoMarket = cryptomktService.postTransaction(params.cryptoMarketParamsRequest)
         forkJoin([observableBitso, observableCryptoMarket]).subscribe({
             next: (results) => {
-                let btiso_success: boolean = false
-                let crmkt_success: boolean = false
+                let btisoSuccess: boolean = false
+                let crmktSuccess: boolean = false
                 if (results[0].status === 200) {
-                    btiso_success = true
+                    btisoSuccess = true
                 } else {Logger.error('error sending request to Bitso') }
                 if (results[1].status === 200) {
-                    crmkt_success = true
+                    crmktSuccess = true
                 } else {Logger.error('error sending request to Crypto Market') } 
 
-                if (btiso_success === true && crmkt_success === true) {
+                if (btisoSuccess === true && crmktSuccess === true) {
                     Logger.info(`Arbitration made: ${JSON.stringify(arbitration)}`)
                     io.sockets.emit(ArbitrationController.eventSocketUpdateArbitration, {
-                        message: `New arbitration made! Direction ${arbitration.exchange_direction} - percent: %${arbitration.arbitration_percent}`
+                        message: `New arbitration made! Direction ${arbitration.exchangeDirection} - percent: %${arbitration.arbitrationPercent}`
                     })
                     arbitrationRepository.create(arbitration)
                 }
@@ -155,9 +155,9 @@ export class ArbitrationController {
      private resolveArbitration(): void {
         let arbitrations = this.compareExchangeTicker()
         arbitrations.forEach(arbitration => {
-            if(arbitration.arbitration_percent >= ArbitrationController.arbitrationPercent) {
+            if(arbitration.arbitrationPercent >= ArbitrationController.arbitrationPercent) {
                 try {
-                    switch (arbitration.exchange_direction) {
+                    switch (arbitration.exchangeDirection) {
                         case BitsoExchangeHelper.exchangeName:
                             // In this direction we sell on Bitso and buy in CryptoMarket
                             let paramsSellBitso: IBitsoRequest = bitsoExchangeHelper.setRequestSellCrypto(1, 1)
@@ -199,15 +199,15 @@ export class ArbitrationController {
             const exchangeleft: IExchange | undefined = this.indexOfExchanges.find(ex => ex.name != direction)
 
             // calculate percentage of gain in this direction
-            let raw_benefit: number = ( exchangeIteration!.ticker!.ask - exchangeleft!.ticker!.bid ) / exchangeIteration!.ticker!.ask * 100
-            let format_benefit: number = Number(raw_benefit.toFixed(2))
+            let rawBenefit: number = ( exchangeIteration!.ticker!.ask - exchangeleft!.ticker!.bid ) / exchangeIteration!.ticker!.ask * 100
+            let formatBenefit: number = Number(rawBenefit.toFixed(2))
 
             // Set arbitration
             let newArbitration: IArbitration = {
-                exchange_selling: exchangeIteration!,
-                exchange_buying: exchangeleft!,
-                exchange_direction: direction,
-                arbitration_percent: format_benefit
+                exchangeSelling: exchangeIteration!,
+                exchangeBuying: exchangeleft!,
+                exchangeDirection: direction,
+                arbitrationPercent: formatBenefit
             }
 
             arbirations.push(newArbitration)

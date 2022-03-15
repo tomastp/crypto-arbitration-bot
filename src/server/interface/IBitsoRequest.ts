@@ -9,6 +9,6 @@ export interface IBitsoRequest {
         side: string
         type: string
         major: number
-        origin_id: number
+        originId: number
     }
 }

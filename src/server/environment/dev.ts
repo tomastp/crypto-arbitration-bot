@@ -12,12 +12,11 @@ export const ENV:IEnv = {
     appSignatureCryMkt: process.env.APP_SIGNATURE_CRYPMKT,
     appNonceCryMkt: process.env.APP_NONCE_CRYPMKT,
     db:{
-        name: process.env.DB_DATABASE!,
-        user:process.env.DB_USER!,
-        pw: process.env.DB_PW!,
-        host: process.env.DB_HOST!,
-        account: '@mongo-account',
-        uri: `mongodb+srv://${process.env.DB_USER!}:${process.env.DB_PW!}${process.env.DB_HOST!}${process.env.DB_NAME!}?retryWrites=true&w=majority`
+        name: process.env.MONGO_DB_DATABASE!,
+        user:process.env.MONGO_DB_USER!,
+        pw: process.env.MONGO_DB_PW!,
+        host: process.env.MONGO_DB_HOST!,
+        uri: `mongodb+srv://${process.env.MONGO_DB_USER!}:${process.env.MONGO_DB_PW!}${process.env.MONGO_DB_HOST!}${process.env.MONGO_DB_NAME!}?retryWrites=true&w=majority`
     },
 }
 

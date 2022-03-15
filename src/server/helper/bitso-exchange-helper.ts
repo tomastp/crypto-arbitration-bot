@@ -10,10 +10,10 @@ export class BitsoExchangeHelper {
      * Set the request parameters to send in the post request
      * to sell crypto
      * @param major number
-     * @param origin_id number
+     * @param originId number
      * @returns IBitsoRequest
      */
-    setRequestSellCrypto(major: number, origin_id: number): IBitsoRequest {
+    setRequestSellCrypto(major: number, originId: number): IBitsoRequest {
         let rtn: IBitsoRequest = {
             headers: {
                 key: env().appKeyBitso!,
@@ -25,7 +25,7 @@ export class BitsoExchangeHelper {
                 side: 'sell',
                 type: 'merket',
                 major: major,
-                origin_id: origin_id
+                originId: originId
             }
         }
         return rtn
@@ -35,10 +35,10 @@ export class BitsoExchangeHelper {
      * Set the request parameters to send in the post request
      * to buy crypto
      * @param major number
-     * @param origin_id number
+     * @param originId number
      * @returns IBitsoRequest
      */
-    setRequestBuyCrypto(major: number, origin_id: number): IBitsoRequest {
+    setRequestBuyCrypto(major: number, originId: number): IBitsoRequest {
         let rtn: IBitsoRequest = {
             headers: {
                 key: env().appKeyBitso!,
@@ -50,7 +50,7 @@ export class BitsoExchangeHelper {
                 side: 'buy',
                 type: 'merket',
                 major: major,
-                origin_id: origin_id
+                originId: originId
             }
         }
         return rtn

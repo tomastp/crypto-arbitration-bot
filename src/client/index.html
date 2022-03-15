@@ -57,7 +57,7 @@
             let dataCM = document.createElement('li')
             let strongCM = document.createElement('strong')
             strongCM.textContent = '@CryptoMarketExchange'
-            dataCM.textContent = msg.crypto_market.symbol + ' - ' + 'Bid: ' + msg.crypto_market.bid + ' Ask:' + msg.crypto_market.ask + '  '
+            dataCM.textContent = msg.cryptoMarket.symbol + ' - ' + 'Bid: ' + msg.cryptoMarket.bid + ' Ask:' + msg.cryptoMarket.ask + '  '
             dataCM.append(strongCM)
             prices.appendChild(dataCM)
             window.scrollTo(0, document.body.scrollHeight)
