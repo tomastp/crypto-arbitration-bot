@@ -5,7 +5,7 @@
   "scripts": {
     "build-server": "npx tsc -p ./src/server",
     "dev-concurrently": "concurrently -k \"npx tsc -p ./src/server -w\"  \"nodemon dist/server/index.js\"",
-    "start": "node dist/server/index.js",
+    "start": "node server/index.ts",
     "heroku-prebuild": "npm install"
   },
   "author": "Tomas Ponzone",
