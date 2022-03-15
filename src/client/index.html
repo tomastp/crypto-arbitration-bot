@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crypto Arbitration Bot</title>
+    <style>
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      #prices { list-style-type: none; margin: 0; padding: 0; }
+      #prices > li { padding: 0.5rem 1rem; }
+      #prices > li:nth-child(odd) { background: #efefef; }
+      #arbitrations { list-style-type: none; margin: 0; padding: 0; }
+      #arbitrations > li { padding: 0.5rem 1rem; }
+      #arbitrations > li { background: #58b150; margin-bottom: 0.5em; }
+    </style>
+  </head>
+  <body>
+      <div>
+          <h1 style="text-align: center;"> Crypto Arbitration Bot </h1>
+          <h5 style="text-align: center;" id="timeNow"> </h5>
+      </div>
+      <hr>
+      <div>
+          <h3> Prices update: </h1>
+          <ul id="prices"></ul>
+      </div>
+      <hr>
+      <div>
+        <h3> Arbitration update: </h1>
+        <ul id="arbitrations"></ul>
+    </div>
+    <hr>
+  </body>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js'></script>
+    <script>
+        function updateTime() {
+          let today = new Date();
+          let date = 'Last updated: ' +today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+'  '+  today.getHours() +':' + today.getMinutes() +':'+ today.getSeconds()
+          let timeElement = document.getElementById('timeNow')
+          document.getElementById('timeNow').innerHTML = date
+        }
+
+        updateTime()
+        let socket = io.connect(':8001')
+        let prices = document.getElementById('prices')
+        let arbitrations = document.getElementById('arbitrations')
+        
+        socket.on('update-prices', function(msg) {
+            updateTime()
+
+            let dataBitso = document.createElement('li')
+            let strongBitso = document.createElement('strong')
+            strongBitso.textContent = '@BitsoExchange'
+            let symbol = msg.bitso.symbol
+            dataBitso.textContent = symbol.toUpperCase() + ' - ' + 'Bid: ' + msg.bitso.bid + ' Ask:' + msg.bitso.ask + '  '
+            dataBitso.append(strongBitso)
+            prices.appendChild(dataBitso)
+
+            let dataCM = document.createElement('li')
+            let strongCM = document.createElement('strong')
+            strongCM.textContent = '@CryptoMarketExchange'
+            dataCM.textContent = msg.crypto_market.symbol + ' - ' + 'Bid: ' + msg.crypto_market.bid + ' Ask:' + msg.crypto_market.ask + '  '
+            dataCM.append(strongCM)
+            prices.appendChild(dataCM)
+            window.scrollTo(0, document.body.scrollHeight)
+        });
+
+        socket.on('update-arbitration', function(msg) {
+            let item = document.createElement('li')
+            item.textContent = msg.message
+            arbitrations.appendChild(item)
+            window.scrollTo(0, document.body.scrollHeight)
+        });
+    </script>
+</html>

@@ -1,9 +1,32 @@
-# Crypto Arbitration Bot
+# Crypto Arbitration Bot :robot:
 
-A project made to arbitrate a cryptocurrency on two different exchanges, **Bitso** and **CryptoMarket**. The arbitration criterion is %5
+A project made to arbitrate a cryptocurrency on two different exchanges, **Bitso** and **CryptoMarket** :rocket:. The arbitration criterion is %5 
 
-To get started run:
+After clone the project, you need to generate a .env file in the root directory with at least this variables :ghost: :
+```
+ENVIRONMENT=dev
+API_PORT=8000
+WEB_SOCKET_PORT=8001
+DOMAIN=http://127.0.0.1
+API_PATH=/api
+STATIC_PATH=/public
+APP_KEY_BITSO=yourAppKeyBitso
+APP_SIGNATURE_BITSO=yourAppSignatureBitso
+APP_NONCE_BITSO=yourNonceBitso
+APP_KEY_CRYPMKT=youtKeyCryptoMarket
+APP_SIGNATURE_CRYPMKT=yourSignatureCryptoMarket
+APP_NONCE_CRYPMKT=yourNonceCryptoMarket
+```
+
+To get started locally run:
 ```
 npm install
 npm run dev-concurrently
+```
+Now you should see the client bot at http://127.0.0.1:8000 :raised_hands:
+
+You can also conect your preferred client to consume the websocket :wink:, the events are:
+```
+update-prices      | Get all prices updated every minute
+update-arbitration | Get all new arbitrations made by the bot each time the arbitration criteria is reached
 ```
